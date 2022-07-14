@@ -1,4 +1,5 @@
 import Layout from '../layout/auth'
+import LoginForm from '../components/loginForm'
 export default function Login(){
     return(
         <div>
@@ -6,6 +7,7 @@ export default function Login(){
                 <div>
                 login page
                 </div>
+            <LoginForm/>
             </Layout>
         </div>
     )
