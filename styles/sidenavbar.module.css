@@ -1,0 +1,27 @@
+.container{
+    width: 280px;
+    height: 972px;
+    left: 0;
+    background-color: #1D262D;
+    color: white;
+    font-family: Roboto;
+}
+
+.fields a{
+    text-decoration: none;
+    color: white;
+}
+
+
+.fields a:hover{
+  color: white;
+}
+
+.fields a h1{
+  font-size: 20px;
+  width: 300px;
+  border-radius: 5px;
+  background-color: #28343E;
+  padding: 10px;
+}
+
