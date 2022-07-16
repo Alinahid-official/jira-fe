@@ -1,27 +1,22 @@
-import Layout from '../layout/auth'
-import React, { useState, useContext } from "react";
+import Layout from '../layout/layout'
+import React, { useEffect, useState, useContext } from "react";
 import { Context } from "../context";
+import LoginForm from "../components/forms/loginForm"
+import { useRouter } from 'next/router'
 
 export default function Login(){
+    const router = useRouter()
     const { state, dispatch } = useContext(Context);
+    useEffect(() => {
+           if(state.user){
+            router.push('/dashboard/projectBoard')
+           }
+    })
     return(
-        <div>
+        <>
             <Layout>
-                <div>
-                    <div>
-                        login page
-                    </div>
-                    <button
-                    onClick={
-                        ()=>
-                        dispatch({
-                            type:'LOG_IN',
-                            payload : { name :'Nahid' }
-                        })
-                    }>log in</button>
-                    <div>{JSON.stringify(state)}</div>
-                </div>
+                <LoginForm/>
             </Layout>
-        </div>
+        </>
     )
 }

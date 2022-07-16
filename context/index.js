@@ -3,7 +3,7 @@ import { user } from "./reducers/user";
 
 // initial state
 const initialState = {
-  user: {},
+  user: null,
 };
 
 // create context
@@ -16,10 +16,12 @@ const combineReducers = (...reducers) => (state, action) => {
 };
 
 // context provider
-const Provider = ({ children }) => {
+const Provider = ({children,loggedInUser}) => {
+  if(loggedInUser){
+    initialState.user = JSON.parse(loggedInUser)
+  }
   const [state, dispatch] = useReducer(combineReducers(user), initialState); // pass more reducers combineReducers(user, blogs, products)
   const value = { state, dispatch };
-
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 

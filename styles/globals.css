@@ -1,5 +1,6 @@
 html,
 body {
+  height: 100%;
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -13,4 +14,59 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+
+/* <-------flex------->  */
+
+.flex{
+  display: flex
+}
+.jc-center{
+  justify-content: center;
+}
+.jc-left{
+  justify-content: left;
+}
+.jc-right{
+  justify-content: right;
+}
+
+/* <-------text aligns------->  */
+
+.align-left{
+  text-align:left
+}
+.align-right{
+  text-align:right
+}
+.align-center{
+  text-align:center
+}
+
+/* <-------dimensions------->  */
+
+.width-100{
+  width: 100%;
+}
+.width-75{
+  width: 75%;
+}
+.width-50{
+  width: 50%;
+}
+.width-25{
+  width: 25%;
+}
+.height-100{
+  height: 100%;
+}
+.height-75{
+  height: 75%;
+}
+.height-50{
+  height: 50%;
+}
+.height-25{
+  height: 25%;
 }

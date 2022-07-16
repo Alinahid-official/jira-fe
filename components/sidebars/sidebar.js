@@ -1,15 +1,24 @@
 import classes from "../../styles/sidenavbar.module.css"
-function SideNavBar(){
-    return(
-        <div className={classes.container}>
-                
-               <div  className={classes.fields}>
-                <a><h1>Project Board</h1></a>
-                <a> <h1 >Create Issue</h1></a>
-                <a> <h1 >Create Project</h1></a>
-                </div>
-                </div>
-    )
+import Link from 'next/link'
+function SideNavBar({role}){
+    if(!role){
+        return(
+            <div className={classes.container}>
+            </div>
+        )
+    }
+    else{
+        return(
+            <div className={classes.container}>
+                <div  className={classes.fields}>
+                    <Link href='/dashboard/projectBoard'><a><h1>Project Board</h1></a></Link>
+                    <Link href='/dashboard/createIssue'><a> <h1 >Create Issue</h1></a></Link>
+                     {role=='manager'?<Link href='/dashboard/createProject'><a> <h1 >Create Project</h1></a></Link>:null}
+                    </div>
+            </div>
+        )
+    }
+    
 }
 
 
