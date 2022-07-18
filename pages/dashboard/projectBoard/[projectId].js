@@ -1,12 +1,13 @@
 import { useContext , useEffect,useState } from "react";
-import { Context } from "../../context";
+import { Context } from "../../../context";
 import { useRouter } from 'next/router'
-import Layout from '../../layout/layout'
-import CreateIssueForm from "../../components/forms/createIssue";
+import Layout from '../../../layout/layout'
+import ProjectDetailsContent from "../../../components/containers/projectDetails";
 
-export default function CreateIssue(){
+export default function ProjectDetails(){
     const router = useRouter()
     const [role, setRole] = useState(null)
+    const [projectId , setProjectId] = useState(null)
     const { state, dispatch } = useContext(Context);
     useEffect(() =>{
         if(!state.user){
@@ -15,12 +16,13 @@ export default function CreateIssue(){
         if(state && state.user){
             setRole(state.user.job_role)
         }
+        setProjectId(router.query.projectId)
     })
     
     return(
         <>
             <Layout role={role}>
-                <CreateIssueForm/>
+                <ProjectDetailsContent projectId={projectId}/>
             </Layout>
         </>
     )

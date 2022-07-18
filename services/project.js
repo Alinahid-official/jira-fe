@@ -7,4 +7,8 @@ const createProject = async (dataObj,header) => {
     return response.data
   }
   
-  export default { createProject }
+const getProjects = async (header)=>{
+  const response = await axios.get(baseUrl,header)
+  return response.data
+}
+  export default { createProject, getProjects }
