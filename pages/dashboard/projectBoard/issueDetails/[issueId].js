@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import Layout from '../../../layout/layout'
 import IssueDetailsContent from "../../../components/containers/issueDetails";
 
-export default function IssueDetails({user}){
+export default function IssueDetails({user,t}){
     const router = useRouter()
     const [issueId , setIssueId] = useState(null)
     useEffect(() =>{
