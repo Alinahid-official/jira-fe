@@ -2,8 +2,7 @@ import {useField}  from "formik";
 import classes from  "../../styles/CreateProjectForm.module.css"
 
 const CustomSelect = ({label,...props})=>{
-    console.log("label",label)
-    console.log("props",props)
+    // console.log(props)
     const [field,meta] = useField(props)
 
     return(

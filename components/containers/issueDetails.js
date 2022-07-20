@@ -8,7 +8,7 @@ export default function ProjectDetails({projectId}){
         setLoad(true)
        const getIssueById = async ()=>{
             try{
-                const token = window.localStorage.getItem('userToken')
+                // const token = window.localStorage.getItem('userToken')
                 const data = await issueServices.getIssueById(projectId,
                     { headers :{ "Access-Control-Allow-Origin" : "*",
                         "Content-type": "Application/json",

@@ -3,14 +3,14 @@ import projectServices from "../../services/project"
 import React, {useEffect, useState, useContext } from "react";
 import Link from 'next/link'
 
-export default function ProjectList(){
+export default function ProjectList({token}){
     const [load, setLoad] = useState(false)
     const [projects, setProjects] = useState(null)
     useEffect( () => {
         
        const getProjectsList = async ()=>{
             try{
-                const token = window.localStorage.getItem('userToken')
+                // const token = window.localStorage.getItem('userToken')
                 const data = await projectServices.getProjects(
                     { headers :{ "Access-Control-Allow-Origin" : "*",
                         "Content-type": "Application/json",

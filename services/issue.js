@@ -9,9 +9,7 @@ const createIssue = async (dataObj,header) => {
 const getIssuesByProjectId = async ( projectId,headers)=>{
   console.log('dedo re',projectId)
   const url = `${baseUrl}/issueByProject/${projectId}`
-  console.log(url)
   const response = await axios.get(url,headers)
-  console.log(response)
   return response.data
 }
   

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import Layout from '../../../layout/layout'
 import ProjectDetailsContent from "../../../components/containers/projectDetails";
 
-export default function ProjectDetails({user}){
+export default function ProjectDetails({user,token}){
     const router = useRouter()
     const [projectId , setProjectId] = useState(null)
     useEffect(() =>{
@@ -16,7 +16,7 @@ export default function ProjectDetails({user}){
     return(
         <>
             <Layout role={user ? JSON.parse(user).job_role : null}>
-                <ProjectDetailsContent projectId={projectId}/>
+                <ProjectDetailsContent projectId={projectId} token={token}/>
             </Layout>
         </>
     )

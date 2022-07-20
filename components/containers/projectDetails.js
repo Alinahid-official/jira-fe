@@ -1,14 +1,14 @@
 import issueServices from "../../services/issue"
 import React, {useEffect, useState } from "react";
 
-export default function ProjectDetails({projectId}){
+export default function ProjectDetails({projectId,token}){
     const [load, setLoad] = useState(false)
     const [issues, setIssues] = useState(null)
     useEffect( () => {
         setLoad(true)
        const getIssueList = async ()=>{
             try{
-                const token = window.localStorage.getItem('userToken')
+                // const token = window.localStorage.getItem('userToken')
                 const data = await issueServices.getIssuesByProjectId(projectId,
                     { headers :{ "Access-Control-Allow-Origin" : "*",
                         "Content-type": "Application/json",

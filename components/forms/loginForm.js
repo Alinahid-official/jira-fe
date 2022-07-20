@@ -1,5 +1,5 @@
 import classes from "../../styles/LoginForm.module.css"
-import userService from '../../services/user'
+import userService from '../../services/auth'
 import React, { useState } from "react";
 import { useRouter } from 'next/router'
 import Backdrop from '@material-ui/core/Backdrop';

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import Layout from '../../../layout/layout'
 import ProjectList from "../../../components/containers/projectList";
 
-export default function ProjectBoard({user}){
+export default function ProjectBoard({user,token}){
     const router = useRouter()
     useEffect(() =>{
         if(!user){
@@ -13,8 +13,8 @@ export default function ProjectBoard({user}){
     
     return(
         <>
-            <Layout role={user ? JSON.parse(user).job_role : null}>
-                <ProjectList/>
+            <Layout  role={user ? JSON.parse(user).job_role : null}>
+                <ProjectList token={token}/>
             </Layout>
         </>
     )

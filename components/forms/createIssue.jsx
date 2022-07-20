@@ -57,6 +57,7 @@
 // }
 
 import {Formik,Form,Field,ErrorMessage} from "formik"
+
 import * as Yup from "yup"
 import axios from 'axios';
 // import classes from "../../styles/CreateIssueForm.module.css"
@@ -68,15 +69,12 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 import { MultiSelect } from "react-multi-select-component";
+import projectService from '../../services/project'
 
-
-
-
-
-const CreateIssueForm = ()=>{
-    const [token, setToken] = useState('')
+const CreateIssueForm = ({token})=>{
+    // const [token, setToken] = useState('')
     const [loading,setLoading] = useState(false)
-    const [projectName,setProjectName] = useState("")
+    const [projectName,setProjectName] = useState([])
     // const [projectId,setProjectId] = useState("")
     const [assignee,setAssignee] = useState("")
     const [selected,setSelected] = useState([]);
@@ -86,57 +84,55 @@ const CreateIssueForm = ()=>{
 
 
   async function  getAssignees(projectId){
+        console.log(projectId)
         try {
-            const response = await axios.get(
-                `http://localhost:4000/project/${projectId}`
-            )
-            if(!response){
-                setLoading(false);
-            }else{
-                const a = response.data
-                                            // const b =  a.map(m=>m.members)
-                   setAssignee(a)
-                console.log("members",a)
-                if(assignee){
-                    const a =  assignee.members.map(m=>{
-                        return {value:m._id ,
-                                 label: m.name
-                            }
-                    })
-                    
-                    setA(JSON.stringify(a));
-                }
-            }
-        } catch (e) {
+            const project = await projectService.getProjectById(projectId,{
+                headers :{ "Access-Control-Allow-Origin" : "*",
+            "Content-type": "Application/json",
+            'Authorization' : token}
+            })
+            // console.log(project)
+
+                // const b =  a.map(m=>m.members)
+                // setAssignee(JSON.stringify(project.members))
+                // console.log("members",a)
+            const a =  project.members.map(m=>{
+                return {value:m._id ,
+                        label: m.name
+                    }
+            })
+                
+            setA(JSON.stringify(a));
             
+        } catch (e) {
+            console.log(e)
         }
   }
     
     useEffect(()=>{
 
-        setToken(window.localStorage.getItem('userToken'))
+        // setToken(window.localStorage.getItem('userToken'))
 
         async function getData(){
             try{
-                const response = await axios.get(
-                    "http://localhost:4000/project"
-                );
-                if(!response){
-                   setLoading(false);
-                }else{
-                    const project  = response.data
-                    // console.log("name",project)
-                    setProjectName(project)
-                   
-                    
-                    setLoading(true)
-                    // console.log("owner",owner)
-                }
+                const project = await projectService.getProjects({
+                    headers :{ "Access-Control-Allow-Origin" : "*",
+                "Content-type": "Application/json",
+                'Authorization' : token}
+                });
+                // console.log("name",project)
+                setProjectName(project)
+                setLoading(false)
+                console.log(project)
+                // console.log("owner",owner)
+            
             }catch(e){
                  console.log(e)
             }
         }
+        setLoading(true)
         getData()
+        setLoading(false)
        
         console.log(a)
         
@@ -151,7 +147,7 @@ const CreateIssueForm = ()=>{
     
     // console.log("sd",a)
 
-    if(!loading){
+    if(loading){
         return <Backdrop open>
    <CircularProgress color="inherit" />
  </Backdrop>
@@ -221,10 +217,9 @@ const CreateIssueForm = ()=>{
                                          label="Project"
                                          name="project"
                                          placeholder="Select"
-                                        //  onChange = {(event)=>{
-                                        //  console.log("id",event.target.value)
-                                        //     getAssignees( event.target.value)
-                                        //  }}
+                                         onChange = {(event)=>{
+                                            getAssignees( event.target.value)
+                                         }}
                                         >
                                            {projectName.map((v)=>{
                               {/* // {console.log(value._id)} */}

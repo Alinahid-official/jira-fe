@@ -51,7 +51,8 @@
 //       </div>
 //     )
 // }
-
+import projectService from '../../services/project'
+import userService from '../../services/user'
 import {Formik,Form,Field,ErrorMessage} from "formik"
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -63,95 +64,99 @@ import * as Yup from "yup"
 import axios from 'axios';
 import CustomSelect from "./CustomSelect"
 import { useEffect,useState } from "react"
-import projectService from '../../services/project'
 import DatePicker from "react-datepicker"
 import classes from "../../styles/CreateProjectForm.module.css"
 import "react-datepicker/dist/react-datepicker.css"
 import { MultiSelect } from "react-multi-select-component";
+// import { set } from 'mongoose';
 
 
-const CreateProjectForm = ()=>{
-   const [owner,setOwner] = useState([])
-   const [loading,setLoading] = useState(false)
-   const [member,setMember] = useState([])
-   const [token, setToken] = useState('')
-   const [startDate, setStartDate] = useState('');
-   const [endDate, setEndDate] = useState("");
-   const [error,setError] = useState(false);
-   const [selected,setSelected] = useState([]);
+const CreateProjectForm = ({token})=>{
+    const [owners,setOwners] = useState('[]')
+    const [name,setName] = useState('')
+    const [owner,setOwner] = useState('select Owner')
+    const [loading,setLoading] = useState(false)
+    const [member,setMember] = useState('[]')
+    // const [token, setToken] = useState('')
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState("");
+    const [error,setError] = useState(false);
+    const [selected,setSelected] = useState([]);
 // console.log(selected)
 // console.log(owner)
-   const onSubmit = async (values) => {
-    // console.log("values",values)
-    // console.log("actions",actions)
-    // console.log("hello")
-    try{
-                    console.log(token)
-                    console.log(values)
-                   
-                    const data = await projectService.createProject({
-                        name:values.projectName,
-                        owner:values.projectOwner,
-                        start_date: startDate,
-                        end_date:endDate,
-                        members:selected.map(s=>s.value)
-                    },
-                        { headers :{ "Access-Control-Allow-Origin" : "*",
-                    "Content-type": "Application/json",
-                    'Authorization' : token}})
-                    console.log("data",data)
-                    // actions.resetForm()
-                }catch(e){
-                    console.log(e)
-                }
+    const onSubmit = async (values) => {
+        setLoading(true)
+        try{
+                console.log(values)
+                console.log(startDate, endDate, selected, owner)
+                const data = await projectService.createProject({
+                    name:name,
+                    owner:owner,
+                    start_date: startDate,
+                    end_date:endDate,
+                    members:selected.map(s=>s.value)
+                },
+                { headers :{ "Access-Control-Allow-Origin" : "*",
+                "Content-type": "Application/json",
+                'Authorization' : token}})
+                // console.log("data",data)
+                resetData()
+                setLoading(false)
+            }catch(e){
+                resetData()
+                setLoading(false)
+                console.log(e)
             }
-          const  resetDate = ()=>{
-            setStartDate('');
-            setEndDate('');
-            // setUser('')
-            setError(false)
-            setSelected("")
-          }
+            
+        }
+
+    const  resetData = ()=>{
+    setStartDate('');
+    setEndDate('');
+    // setUser('')
+    setError(false)
+    setSelected("")
+    // setName('')
+    setMember('[]')
+    setOwner('')
+    }
 
     useEffect(()=>{
-
-        setToken(window.localStorage.getItem('userToken'))
-
-        async function getData(){
+        // setToken(window.localStorage.getItem('userToken'))
+        async function getData(token){
             try{
-                const response = await axios.get(
-                    "http://localhost:4000/user/getUsers"
-                );
-                if(!response){
-                   setLoading(false);
-                return
-                }else{
-                    const users  = response.data
-                    // console.log("users",users)
-                   const members  = users.filter(function(user){
+                // console.log('token',token)
+                const users = await userService.getUsers({
+                    headers :{ "Access-Control-Allow-Origin" : "*",
+                "Content-type": "Application/json",
+                'Authorization' : token}
+                })
+                // console.log("users",users)
+                const members  = users.filter(function(user){
                     return user.job_role == "developer"
-                   })
+                })
 
-                   setMember(members)
-                   
-                        // console.log("members",members)
-                   const owners  = users.filter(function(user){
+                setMember(JSON.stringify(members))
+                
+                // console.log("members",members)
+                const owners  = users.filter(function(user){
                     return user.job_role == "manager"
-                   })
-                   setOwner(owners)
-                   
-                //    console.log("owners",owners)
-                    // setOwner(response.data)
-                    
-                    setLoading(true)
-                    // console.log("owner",owner)
-                }
+                })
+                setOwners(JSON.stringify(owners))
+                
+            //    console.log("owners",owners)
+                // setOwner(response.data)
+                
+                // setLoading(true)
+                // console.log("owner",owner)
             }catch(e){
                  console.log(e)
             }
         }
-        getData()
-    },[])
+        setLoading(true)
+        getData(token)
+        setLoading(false)
+    })
 
     const validateDate =()=>{
         if(startDate?.length === 0  ){
@@ -165,9 +170,9 @@ const CreateProjectForm = ()=>{
        }
         
     const validate = Yup.object({
-        projectOwner:Yup
-        .string()
-        .required("Please Select"),
+        // projectOwner:Yup
+        // .string()
+        // .required("Please Select"),
         // .oneOf([] , "Please Select"),
         projectName:Yup
         .string()
@@ -182,7 +187,7 @@ const CreateProjectForm = ()=>{
         // .required("Please Select"),
         
     })
-    const assignee = member.map(m=>{
+    const assignee = JSON.parse(member).map(m=>{
         return {value:m._id ,
                  label: m.name
             }
@@ -193,7 +198,7 @@ const CreateProjectForm = ()=>{
     // const [selected, setSelected] = useState([])
     // console.log("options",options)
 
-if(!loading){
+if(loading){
    return <Backdrop open>
    <CircularProgress color="inherit" />
  </Backdrop>
@@ -228,19 +233,26 @@ else{
                           name = "projectName"
                           type = "text"
                           placeholder = "Project Name"
+                        //   value = {name}
+                        //   onChange= {e=>setName(e.target.value)}
                        />
                        </div>
  
                        {/* project owner */}
                        <div className={classes.owner}>
                      <CustomSelect
-                       label="Project Owner"
-                       name = "projectOwner"
-                       placeholder= "Select">
-                        
+                        label="Project Owner"
+                        name = "projectOwner"
+                        placeholder= "Select"
+                        onChange={e=>{e.preventDefault()
+                                        setOwner(e.target.value)
+                                    }}
+                        value={owner}
+                        >
+                         
                          {/* {console.log(owner)} */}
-                         {owner.map((value)=>{
-                             // {console.log(value._id)}
+                         {JSON.parse(owners).map((value)=>{
+                            //  {console.log('oneowner',value)}
                          return <option className={classes.option} key={value._id} value={value._id}>{value.name}</option>
                          })}
                      </CustomSelect>
@@ -306,7 +318,7 @@ else{
                      <div></div>
  
                          <div className={classes["pro-btn"]}>
-                     <button  onClick={resetDate} className={classes.resetBtn} type="reset"  >Reset</button>
+                     <button  onClick={resetData} className={classes.resetBtn} type="reset"  >Reset</button>
                      {/* {validationSchema ?<button className={classes.createBtn} type="submit">Create</button>:<button className={classes.createBtn} disabled type="submit">Create</button>} */}
                       <button onSubmit={onSubmit}  onClick={validateDate}     className={classes.createBtn}  type="submit" >Create</button>
                       {/* disabled={!(formik.isValid || formik.dirty)} */}
