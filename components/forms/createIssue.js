@@ -1,33 +1,41 @@
 import classes from "../../styles/LoginForm.module.css"
 import issueService from '../../services/issue'
-import React, {useEffect, useState, useContext } from "react";
-import { Context } from "../../context";
+import React, {useEffect, useState } from "react";
 
-export default function CreateIssueForm(){
+export default function CreateIssueForm({user}){
    
     const [project , setProject] = useState('')
     const [assignee, setAssignee] = useState('')
     const [loading, setLoading] = useState(false)
     const [token, setToken] = useState('')
-    const { state, dispatch } = useContext(Context);
+    const [msg, setMsg] = useState(null)
     const handleSubmit = async (e)=>{
         e.preventDefault();
         try{
             setLoading(true)
             console.log(token)
+            console.log(user)
             const data = await issueService.createIssue({
                 project_id: project,
                 issued_to: assignee,
-                created_by: state.user.id
+                created_by: JSON.parse(user).id
             },{ headers :{ "Access-Control-Allow-Origin" : "*",
             "Content-type": "Application/json",
             'Authorization' : token}})
-            console.log(data)
+            setMsg('success')
             setProject('')
             setAssignee('')
             setLoading(false)
+            setTimeout(()=>{
+                setMsg(null)
+            },5000)
             
         }catch(e){
+            setMsg('error')
+            setLoading(false)
+            setTimeout(()=>{
+                setMsg(null)
+            },5000)
             console.log(e)
         }
     }
@@ -37,7 +45,7 @@ export default function CreateIssueForm(){
     return(
         
         <div className='flex align-center jc-center'>
-      
+          {msg?(msg=='error'?<div>Something went wong</div>:<div>successfully created issue</div>):null}
           <form id="form" onSubmit={handleSubmit}>
               <h1>Create Issue</h1>
               <div className={classes["login-field"]}>
@@ -52,6 +60,6 @@ export default function CreateIssueForm(){
              
           </form>
 
-      </div>
+        </div>
     )
 }

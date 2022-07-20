@@ -1,12 +1,13 @@
 import classes from "../../styles/LoginForm.module.css"
 import projectService from '../../services/project'
-import React, {useEffect, useState, useContext } from "react";
+import React, {useEffect, useState} from "react";
 
 export default function CreateProjectForm(){
     const [name , setName] = useState('')
     const [owner, setOwner] = useState('')
     const [loading, setLoading] = useState(false)
     const [token, setToken] = useState('')
+    const [msg, setMsg] = useState(null)
     const handleSubmit = async (e)=>{
         e.preventDefault();
         try{
@@ -18,12 +19,18 @@ export default function CreateProjectForm(){
             },{ headers :{ "Access-Control-Allow-Origin" : "*",
             "Content-type": "Application/json",
             'Authorization' : token}})
-            console.log(data)
+            setMsg('success')
             setName('')
             setOwner('')
             setLoading(false)
-            
+            setTimeout(()=>{
+                setMsg(null)
+            },5000)
         }catch(e){
+            setMsg('error')
+            setTimeout(()=>{
+                setMsg(null)
+            },5000)
             console.log(e)
         }
     }
@@ -33,7 +40,7 @@ export default function CreateProjectForm(){
     return(
         
         <div className='flex align-center jc-center'>
-      
+          {msg?(msg=='error'?<div>Something went wong</div>:<div>successfully created Project</div>):null}
           <form id="form" onSubmit={handleSubmit}>
               <h1>Create Project</h1>
               <div className={classes["login-field"]}>

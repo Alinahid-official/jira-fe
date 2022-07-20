@@ -12,7 +12,7 @@ function SideNavBar({role}){
             <div className={classes.container}>
                 <div  className={classes.fields}>
                     <Link href='/dashboard/projectBoard'><a><h1>Project Board</h1></a></Link>
-                    <Link href='/dashboard/issueDetails'><a> <h1 >Create Issue</h1></a></Link>
+                    <Link href='/dashboard/createIssue'><a> <h1 >Create Issue</h1></a></Link>
                      {role=='manager'?<Link href='/dashboard/createProject'><a> <h1 >Create Project</h1></a></Link>:null}
                     </div>
             </div>

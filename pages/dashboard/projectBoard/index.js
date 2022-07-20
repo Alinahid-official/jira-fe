@@ -1,25 +1,19 @@
-import { useContext , useEffect,useState } from "react";
-import { Context } from "../../../context";
+import { useEffect } from "react";
 import { useRouter } from 'next/router'
 import Layout from '../../../layout/layout'
 import ProjectList from "../../../components/containers/projectList";
 
-export default function ProjectBoard(){
+export default function ProjectBoard({user}){
     const router = useRouter()
-    const [role, setRole] = useState(null)
-    const { state, dispatch } = useContext(Context);
     useEffect(() =>{
-        if(!state.user){
+        if(!user){
             router.push('/login')
-        }
-        if(state && state.user){
-            setRole(state.user.job_role)
         }
     })
     
     return(
         <>
-            <Layout role={role}>
+            <Layout role={user ? JSON.parse(user).job_role : null}>
                 <ProjectList/>
             </Layout>
         </>

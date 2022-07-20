@@ -1,12 +1,10 @@
 import classes from "../../styles/LoginForm.module.css"
 import userService from '../../services/user'
-import React, { useState, useContext } from "react";
-import { Context } from "../../context";
+import React, { useState } from "react";
 import { useRouter } from 'next/router'
 
 export default function LoginForm(){
     const router = useRouter()
-    const { state, dispatch } = useContext(Context);
     const [email , setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
@@ -24,10 +22,6 @@ export default function LoginForm(){
             window.localStorage.setItem(
                 'user', JSON.stringify(data.user)
             )
-            dispatch({
-                type : 'LOG_IN',
-                payload : data.user
-            })
             setEmail('')
             setPassword('')
             router.push('/dashboard/projectBoard')

@@ -1,22 +1,22 @@
 import { useEffect,useState } from "react";
 import { useRouter } from 'next/router'
 import Layout from '../../../layout/layout'
-import ProjectDetailsContent from "../../../components/containers/projectDetails";
+import IssueDetailsContent from "../../../components/containers/issueDetails";
 
-export default function ProjectDetails({user}){
+export default function IssueDetails({user}){
     const router = useRouter()
-    const [projectId , setProjectId] = useState(null)
+    const [issueId , setIssueId] = useState(null)
     useEffect(() =>{
         if(!user){
             router.push('/login')
         }
-        setProjectId(router.query.projectId)
+        setIssueId(router.query.issuetId)
     })
     
     return(
         <>
             <Layout role={user ? JSON.parse(user).job_role : null}>
-                <ProjectDetailsContent projectId={projectId}/>
+                <IssueDetailsContent issueId={issueId}/>
             </Layout>
         </>
     )

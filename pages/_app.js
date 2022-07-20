@@ -1,9 +1,8 @@
 import '../styles/globals.css'
-import { Provider } from "../context";
 import {useEffect, useState} from "react";
 
 function MyApp({ Component, pageProps }) {
-  const [loggedInUser, setUser] = useState('')
+  const [user, setUser] = useState('')
 
   useEffect(()=>{
     if(window.localStorage.userToken){
@@ -11,9 +10,7 @@ function MyApp({ Component, pageProps }) {
     }
   })
   return(
-    <Provider loggedInUser = {loggedInUser}>
-      <Component {...pageProps} />
-    </Provider>
+      <Component user={user} {...pageProps} />
   ) 
 }
 

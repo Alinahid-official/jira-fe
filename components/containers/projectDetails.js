@@ -1,12 +1,11 @@
-import classes from "../../styles/LoginForm.module.css"
 import issueServices from "../../services/issue"
-import React, {useEffect, useState, useContext } from "react";
-import { Context } from "../../context";
-
+import React, {useEffect, useState } from "react";
 
 export default function ProjectDetails({projectId}){
+    const [load, setLoad] = useState(false)
     const [issues, setIssues] = useState(null)
     useEffect( () => {
+        setLoad(true)
        const getIssueList = async ()=>{
             try{
                 const token = window.localStorage.getItem('userToken')
@@ -21,6 +20,7 @@ export default function ProjectDetails({projectId}){
             }
         }
         getIssueList()
+        setLoad(false)
     })
     return(
         <div>
