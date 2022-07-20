@@ -14,9 +14,10 @@ export default function Login(){
     })
     return(
         <>
-            <Layout>
+            {/* <Layout> */}
+            
                 <LoginForm/>
-            </Layout>
+            {/* </Layout> */}
         </>
     )
 }

@@ -10,6 +10,7 @@ export default function UserDashBoard(){
             router.push('/login')
         }
     })
+    console.log(state)
     
     return(
         <div>

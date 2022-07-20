@@ -22,6 +22,7 @@ const Provider = ({children,loggedInUser}) => {
   }
   const [state, dispatch] = useReducer(combineReducers(user), initialState); // pass more reducers combineReducers(user, blogs, products)
   const value = { state, dispatch };
+ 
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 

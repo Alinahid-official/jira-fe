@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import Layout from '../../layout/layout'
 import CreateIssueForm from "../../components/forms/createIssue";
 
-export default function createIssue(){
+export default function CreateIssue(){
     const router = useRouter()
     const [role, setRole] = useState(null)
     const { state, dispatch } = useContext(Context);
