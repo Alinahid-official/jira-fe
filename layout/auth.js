@@ -4,6 +4,8 @@ export default function Auth({children}){
             <h1>Header</h1>
             {children}
             <footer>footer</footer>
+              
+
         </div>
     )
 }

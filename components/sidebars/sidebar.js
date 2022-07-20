@@ -7,6 +7,7 @@ function SideNavBar(){
                 <a><h1>Project Board</h1></a>
                 <a> <h1 >Create Issue</h1></a>
                 <a> <h1 >Create Project</h1></a>
+                
                 </div>
                 </div>
     )
