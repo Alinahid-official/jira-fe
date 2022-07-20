@@ -19,9 +19,9 @@ a {
 
 /* <-------flex------->  */
 
-.flex{
+/* .flex{
   display: flex
-}
+} */
 .jc-center{
   justify-content: center;
 }
@@ -31,6 +31,8 @@ a {
 .jc-right{
   justify-content: right;
 }
+
+
 
 /* <-------text aligns------->  */
 

@@ -13,9 +13,10 @@ export default function Login({user}){
     })
     return(
         <>
-            <Layout>
+            {/* <Layout> */}
+            
                 <LoginForm/>
-            </Layout>
+            {/* </Layout> */}
         </>
     )
 }

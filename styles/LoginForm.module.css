@@ -1,8 +1,24 @@
-#form{
+
+.grid{
+    display: grid;
+    grid-template-columns: 25% auto;
+}
+
+.sideBar{
+    background-color: #1D262D;
+    height: 100vh;
+}
+.sideBar h1{
+    color: white;
+    margin: 7rem;
+}
+
+.form{
     display: flex;
+    /* margin: 40px 0; */
     flex-direction: column;
     justify-content: center;
-    text-align: center
+    /* text-align: center */
 }
 
 .login-field label{
