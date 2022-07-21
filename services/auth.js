@@ -1,5 +1,6 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:4000/auth'
+import config from '../config'
+const baseUrl = `${config.getServerHost()}/auth`
 
 const login = async credentials => {
     const response = await axios.post(`${baseUrl}/login`, credentials)

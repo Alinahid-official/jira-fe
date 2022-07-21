@@ -121,8 +121,12 @@ const CreateIssueForm = ({token})=>{
                 'Authorization' : token}
                 });
                 // console.log("name",project)
+                if(!project){
+                    setLoading(false)
+                    return
+                }
                 setProjectName(project)
-                setLoading(false)
+                setLoading(true)
                 console.log(project)
                 // console.log("owner",owner)
             
@@ -147,7 +151,7 @@ const CreateIssueForm = ({token})=>{
     
     // console.log("sd",a)
 
-    if(loading){
+    if(!loading){
         return <Backdrop open>
    <CircularProgress color="inherit" />
  </Backdrop>

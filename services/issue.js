@@ -1,5 +1,6 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:4000/issue'
+import config from '../config'
+const baseUrl = `${config.getServerHost()}/issue`
 
 const createIssue = async (dataObj,header) => {
     console.log(dataObj,header)

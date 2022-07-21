@@ -1,7 +1,9 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:4000/user'
+import config from '../config'
+const baseUrl = `${config.getServerHost()}/user`
   
 const getUsers = async headers =>{
+  console.log(baseUrl)
   const res = await axios.get(baseUrl,headers)
   return res.data
 }

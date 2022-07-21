@@ -85,10 +85,10 @@ const CreateProjectForm = ({token})=>{
 // console.log(selected)
 // console.log(owner)
     const onSubmit = async (values) => {
-        setLoading(true)
+       
         try{
-                console.log(values)
-                console.log(startDate, endDate, selected, owner)
+                // console.log(values)
+                // console.log(startDate, endDate, selected, owner)
                 const data = await projectService.createProject({
                     name:name,
                     owner:owner,
@@ -101,10 +101,10 @@ const CreateProjectForm = ({token})=>{
                 'Authorization' : token}})
                 // console.log("data",data)
                 resetData()
-                setLoading(false)
+                // setLoading(false)
             }catch(e){
                 resetData()
-                setLoading(false)
+                // setLoading(false)
                 console.log(e)
             }
             
@@ -115,23 +115,28 @@ const CreateProjectForm = ({token})=>{
     setEndDate('');
     // setUser('')
     setError(false)
-    setSelected("")
+    setSelected([])
     // setName('')
     setMember('[]')
     setOwner('')
     }
-
     useEffect(()=>{
         // setToken(window.localStorage.getItem('userToken'))
         async function getData(token){
+            
             try{
-                // console.log('token',token)
+                
+                console.log('start')
                 const users = await userService.getUsers({
                     headers :{ "Access-Control-Allow-Origin" : "*",
                 "Content-type": "Application/json",
                 'Authorization' : token}
                 })
                 // console.log("users",users)
+                if(!users){
+                    setLoading(false)
+                    return
+                }
                 const members  = users.filter(function(user){
                     return user.job_role == "developer"
                 })
@@ -143,21 +148,22 @@ const CreateProjectForm = ({token})=>{
                     return user.job_role == "manager"
                 })
                 setOwners(JSON.stringify(owners))
-                
-            //    console.log("owners",owners)
+                // setLoading(false)
+               console.log("close")
                 // setOwner(response.data)
                 
-                // setLoading(true)
+                setLoading(true)
                 // console.log("owner",owner)
             }catch(e){
+                // setLoading(false)
                  console.log(e)
             }
+            
         }
-        setLoading(true)
+        
         getData(token)
-        setLoading(false)
+        
     })
-
     const validateDate =()=>{
         if(startDate?.length === 0  ){
             setError(true)
@@ -198,7 +204,7 @@ const CreateProjectForm = ({token})=>{
     // const [selected, setSelected] = useState([])
     // console.log("options",options)
 
-if(loading){
+if(!loading){
    return <Backdrop open>
    <CircularProgress color="inherit" />
  </Backdrop>
@@ -301,7 +307,7 @@ else{
                         <label className={classes.label} htmlFor="members">Members <span className={classes.star}>*</span></label>
                         <div className={classes.members}>
                        <MultiSelect  
-                         options={ assignee}
+                         options={assignee}
                          name="members"
                          required = "true"
                          displayValue= "value"
