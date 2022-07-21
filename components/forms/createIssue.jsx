@@ -82,7 +82,8 @@ const CreateIssueForm = ()=>{
     const [selected,setSelected] = useState([]);
     const [a,setA] = useState(JSON.stringify([]));
     // console.log(projectId)
-    // console.log("",assignee)
+    // console.log("",a)
+  
 
 
   async function  getAssignees(projectId){
@@ -96,7 +97,7 @@ const CreateIssueForm = ()=>{
                 const a = response.data
                                             // const b =  a.map(m=>m.members)
                    setAssignee(a)
-                console.log("members",a)
+                // console.log("members",a)
                 if(assignee){
                     const a =  assignee.members.map(m=>{
                         return {value:m._id ,
@@ -105,6 +106,7 @@ const CreateIssueForm = ()=>{
                     })
                     
                     setA(JSON.stringify(a));
+                    console.log("a",a)
                 }
             }
         } catch (e) {
@@ -112,6 +114,9 @@ const CreateIssueForm = ()=>{
         }
   }
     
+  const handleOnChange = (event ) => {
+    console.log("Form::onChange", event);
+};
     useEffect(()=>{
 
         setToken(window.localStorage.getItem('userToken'))
@@ -138,7 +143,7 @@ const CreateIssueForm = ()=>{
         }
         getData()
        
-        console.log(a)
+      
         
     },[a])
 
@@ -171,7 +176,7 @@ const CreateIssueForm = ()=>{
                 storyPoints:""
              }}
              >
-    
+  
     
             {
                 formik=>{
@@ -221,11 +226,18 @@ const CreateIssueForm = ()=>{
                                          label="Project"
                                          name="project"
                                          placeholder="Select"
-                                        //  onChange = {(event)=>{
-                                        //  console.log("id",event.target.value)
-                                        //     getAssignees( event.target.value)
-                                        //  }}
+                                        //  value = {formik.values.project}
+                                        //  onChange ={handleOnChange}
+                                         onChange = {(event)=>{
+                                        //    value = event.target.value
+                                        //    console.log(value)
+                                        // value = formik.values.project
+                                        console.log(formik.values.project)
+                                         console.log("id",event.target.value)
+                                            getAssignees( event.target.value)
+                                         }}
                                         >
+                                            {/* <option value="" disabled selected hidden>Please Choose...</option> */}
                                            {projectName.map((v)=>{
                               {/* // {console.log(value._id)} */}
                          return  <option  className={classes.option}  key={v._id} value={v._id}>{v.name}</option> 

@@ -1,4 +1,5 @@
 .grid{
     display: grid;
-    grid-template-columns: 350px auto;
+    height: 100vh;
+    grid-template-columns: 22% auto;
 }
