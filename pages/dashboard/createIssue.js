@@ -1,27 +1,21 @@
-import { useContext , useEffect,useState } from "react";
-import { Context } from "../../context";
+import { useEffect } from "react";
 import { useRouter } from 'next/router'
 import Layout from '../../layout/layout'
 import CreateIssueForm from "../../components/forms/createIssue";
 
-export default function createIssue(){
+export default function CreateIssue({user,token}){
     const router = useRouter()
-    const [role, setRole] = useState(null)
-    const { state, dispatch } = useContext(Context);
     useEffect(() =>{
-        if(!state.user){
+        if(!user){
             router.push('/login')
-        }
-        if(state && state.user){
-            setRole(state.user.job_role)
         }
     })
     
     return(
         <>
-            <Layout role={role}>
-                <CreateIssueForm/>
-            </Layout>
+            <Layout role={user ? JSON.parse(user).job_role : null}>
+            <CreateIssueForm user={user} token={token}/>
+            </Layout> 
         </>
     )
 }

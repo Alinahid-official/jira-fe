@@ -1,9 +1,11 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:4000/auth/login'
-
-const login = async credentials => {
-    const response = await axios.post(baseUrl, credentials)
-    return response.data
-  }
+import config from '../config'
+const baseUrl = `${config.getServerHost()}/user`
   
-  export default { login }
+const getUsers = async headers =>{
+  console.log(baseUrl)
+  const res = await axios.get(baseUrl,headers)
+  return res.data
+}
+
+export default { getUsers }
