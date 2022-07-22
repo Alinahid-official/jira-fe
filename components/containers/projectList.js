@@ -4,6 +4,7 @@ import React, {useEffect, useState, useContext } from "react";
 import Link from 'next/link'
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import ProjectDetailsCard from "../cards/projectDetails";
 
 export default function ProjectList({token}){
     const [load, setLoad] = useState(false)
@@ -36,19 +37,26 @@ export default function ProjectList({token}){
         // setLoad(true)
         // const projectList = JSON.parse(projects)
     })
+    const header ={
+
+    }
     return(
         <>
         {!load ? <Backdrop open>
                     <CircularProgress color="inherit" />
                 </Backdrop>:
             <div>
-            {projects?JSON.parse(projects).map(project =>{
+                <h1>Welcome to Tracker</h1>
+                <h3>Project Board</h3>
+                <div style={{overflowY : "scroll",height : "100vh"}}>
+                {projects?JSON.parse(projects).map(project =>{
                 return(
-                    <li key={project._id}>
-                        <Link href={`/dashboard/projectBoard/${project._id}`} ><a>{project._id}</a></Link>   
-                    </li>
-                )
-            }):null}
+                        <Link href={`/dashboard/projectBoard/${project._id}`} >
+                            <a><ProjectDetailsCard key={project._id} project={project}/></a>
+                        </Link> 
+                    )
+                }):null}
+                </div>
             </div>
         }
         </>
