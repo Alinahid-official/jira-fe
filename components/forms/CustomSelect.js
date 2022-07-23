@@ -9,15 +9,15 @@ const CustomSelect = ({label,...props})=>{
         <>
         
         <label className={classes.label}>{label}<span className={classes.star}>*</span></label>
-        <div className={classes.select}>
-        <select
-         {...field}
-         {...props}
+            <div className={classes.select}>
+            <select
+            {...field}
+            {...props}
 
-         className = {meta.touched && meta.error ? classes["input-error"] :""}
-         />
-         </div>
-         {meta.touched && meta.error && <div className={classes["error"]}>{meta.error}</div>}
+            className = {meta.touched && meta.error ? classes["input-error"] :""}
+            />
+            </div>
+            {meta.touched && meta.error && <div className={classes["error"]}>{meta.error}</div>}
         </>
     )
 }

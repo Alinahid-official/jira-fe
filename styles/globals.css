@@ -19,9 +19,9 @@ a {
 
 /* <-------flex------->  */
 
-/* .flex{
+.flex{
   display: flex
-} */
+}
 .jc-center{
   justify-content: center;
 }
@@ -31,7 +31,12 @@ a {
 .jc-right{
   justify-content: right;
 }
-
+.jc-between{
+  justify-content: space-between
+}
+.jc-around{
+  justify-content: space-around
+}
 
 
 /* <-------text aligns------->  */
@@ -72,8 +77,19 @@ a {
 .height-25{
   height: 25%;
 }
-
-
+.pad-10{
+  /* padding-bottom: 5px; */
+  padding:2%;
+}
+.bg-red{
+  background-color:red
+}
+.bg-yellow{
+  background-color:yellow
+}
+.bg-green{
+  background-color:green
+}
 #main{
   width: 100%;
   height: 100%;

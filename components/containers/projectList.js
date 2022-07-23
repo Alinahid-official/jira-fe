@@ -37,9 +37,6 @@ export default function ProjectList({token}){
         // setLoad(true)
         // const projectList = JSON.parse(projects)
     })
-    const header ={
-
-    }
     return(
         <>
         {!load ? <Backdrop open>
@@ -48,11 +45,11 @@ export default function ProjectList({token}){
             <div>
                 <h1>Welcome to Tracker</h1>
                 <h3>Project Board</h3>
-                <div style={{overflowY : "scroll",height : "100vh"}}>
+                <div style={{overflowY : "scroll"}}>
                 {projects?JSON.parse(projects).map(project =>{
                 return(
-                        <Link href={`/dashboard/projectBoard/${project._id}`} >
-                            <a><ProjectDetailsCard key={project._id} project={project}/></a>
+                        <Link key={project._id} href={`/dashboard/projectBoard/${project._id}`} >
+                            <a><ProjectDetailsCard  project={project}/></a>
                         </Link> 
                     )
                 }):null}

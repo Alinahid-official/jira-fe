@@ -10,15 +10,18 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 import { MultiSelect } from "react-multi-select-component";
 import projectService from '../../services/project'
+import issueService from '../../services/issue'
 
 const CreateIssueForm = ({token})=>{
     // const [token, setToken] = useState('')
     const [loading,setLoading] = useState(false)
     const [projectName,setProjectName] = useState([])
-    // const [projectId,setProjectId] = useState("")
+    const [project,setProject] = useState(null)
     const [assignee,setAssignee] = useState("")
     const [selected,setSelected] = useState([]);
     const [a,setA] = useState(JSON.stringify([]));
+    const [status, setStatus] = useState(null)
+    const [priority, setPriority] = useState(null)
     // console.log(projectId)
     // console.log("",assignee)
 
@@ -80,8 +83,30 @@ const CreateIssueForm = ({token})=>{
        
         console.log(a)
         
-    },[a])
-
+    },[])
+    const onSubmit =async (values,{resetForm})=>{
+        console.log(values)
+        console.log(selected,project)
+        const issued_to = selected.map(values=>{
+            return values.value
+        })
+        setLoading(false)
+        const data = await issueService.createIssue({
+            project_id:project,
+            issued_to:issued_to,
+            status : status,
+            priority:priority,
+            summary:values.summary,
+            description :values.description
+        },
+        
+        { headers :{ "Access-Control-Allow-Origin" : "*",
+        "Content-type": "Application/json",
+        'Authorization' : token}})
+        console.log(data)
+        resetForm()
+        setLoading(true)
+    }
     // const a ={
     //         //  value:assignee.members.map(i=>i._id),
     //         //  label:assignee.members.map(m=>m.name)
@@ -101,7 +126,7 @@ const CreateIssueForm = ({token})=>{
             <Formik
              initialValues={{
                 summary:"",
-                type:"",
+                status:"",
                 project:"",
                 description:"",
                 priority:"",
@@ -110,13 +135,15 @@ const CreateIssueForm = ({token})=>{
                 sprint:"",
                 storyPoints:""
              }}
+             onSubmit={onSubmit}
              >
     
-    
+             
             {
                 formik=>{
+                  console.log(formik)  
                     return(
-                        <Form>
+                        <Form >
                             <h1 className={classes.head}>Create User Stories/Tasks/Bugs</h1>
                             <div className={classes.grid}>
                                 {/* summary */}
@@ -147,7 +174,12 @@ const CreateIssueForm = ({token})=>{
                                          label="Priority"
                                          name="priority"
                                          placeholder="Select"
+                                         value={priority}
+                                         onChange={e=>{
+                                            e.preventDefault()
+                                            setPriority(e.target.value)}}
                                         >
+                                            <option disabled selected value> -- select an option -- </option>  
                                             <option value="high">High</option>
                                             <option value="low">Low</option>
                                             <option value="medium">Medium</option>
@@ -161,14 +193,18 @@ const CreateIssueForm = ({token})=>{
                                          label="Project"
                                          name="project"
                                          placeholder="Select"
+                                         value ={project}
                                          onChange = {(event)=>{
+                                            event.preventDefault()
+                                            setProject(event.target.value)
                                             getAssignees( event.target.value)
                                          }}
                                         >
+                                          <option disabled selected value> -- select an option -- </option>  
                                            {projectName.map((v)=>{
-                              {/* // {console.log(value._id)} */}
-                         return  <option  className={classes.option}  key={v._id} value={v._id}>{v.name}</option> 
-                          })} 
+                                        {/* // {console.log(value._id)} */}
+                                        return  <option  className={classes.option}  key={v._id} value={v._id}>{v.name}</option> 
+                                        })} 
                                         </CustomSelect>
                                     </div>
 
@@ -196,8 +232,35 @@ const CreateIssueForm = ({token})=>{
                                           
                                         
                                     </div>
+                                    <div >
+                                        <CustomSelect
+                                         label="Status"
+                                         name="status"
+                                         placeholder="Select"
+                                         value={status}
+                                         onChange={e=>{
+                                            e.preventDefault()
+                                            setStatus(e.target.value)}}
+                                        >
+                                            <option disabled selected value> -- select an option -- </option>
+                                            <option value="todo">To do</option>
+                                            <option value="development">Development</option>
+                                            <option value="testing">Testing</option>
+                                            {/* <option value="completed">Completed</option> */}
+    
+                                        </CustomSelect>
+                                    </div>
     
                                 
+                            </div>
+                            <div className={classes["pro-btn"]}>
+                                <button   className={classes.resetBtn} type="reset"  >Reset</button>
+                                {/* {validationSchema ?<button className={classes.createBtn} type="submit">Create</button>:<button className={classes.createBtn} disabled type="submit">Create</button>} */}
+                                <button className={classes.createBtn}  type="submit" >Create</button>
+                                {/* disabled={!(formik.isValid || formik.dirty)} */}
+                                {/* disabled={!(formik.isValid && formik.dirty)} */}
+                     
+ 
                             </div>
                         </Form>
                     )
