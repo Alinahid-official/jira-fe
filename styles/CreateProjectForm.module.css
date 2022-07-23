@@ -8,7 +8,7 @@
 .grid{
   display: grid;
   justify-content: center;
-  grid-template-columns: 528px 528px;
+  grid-template-columns:repeat(2,30rem);
   gap: 30px;
   margin-top: 40px;
   margin-left: 60px;
@@ -17,12 +17,21 @@
 .label{
   display: block;
 }
+
+.summary .input input{
+  grid-column:1 / span 2 !important;
+}
+
+/* #summary{
+  grid-column:1 / span 2 !important;
+} */
+
 /* .summary .input input {
   grid-column: 1 / span 2;
 } */
 
 .select select{
-  width:300px;
+  width:80%;
   height: 52px;
   margin-top: 0.2rem;
   padding: 0.1rem;
@@ -40,27 +49,18 @@
   margin-top: 0.3rem;
 }
 
+
 .multiInput{
-  width: 300px;
+  width: 80%;
   height: 52px;
   border: 0px;
   outline: none;
 }
 
-/* .multiInput{
-  width: 300px;
-  height: 52px;
-  /* margin-top: 0.2rem; */
-  /* border:0px; */
-  /* background-color: #F7F8FA; */
- 
-  /* padding-left: 0.9rem; */
-  /* border-radius: 10px; */
-  /* outline: none; */
-/* } */ 
+
 
 .input input{
-  width: 300px;
+  width: 80%;
   height: 52px;
   margin-top: 0.2rem;
   background-color: #F7F8FA;

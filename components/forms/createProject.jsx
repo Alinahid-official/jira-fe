@@ -1,63 +1,10 @@
-// import classes from "../../styles/LoginForm.module.css"
-// import projectService from '../../services/project'
-// import React, {useEffect, useState, useContext } from "react";
-
-// export default function CreateProjectForm(){
-//     const [name , setName] = useState('')
-//     const [owner, setOwner] = useState('')
-//     const [loading, setLoading] = useState(false)
-//     const [token, setToken] = useState('')
-//     const handleSubmit = async (e)=>{
-//         e.preventDefault();
-//         try{
-//             setLoading(true)
-//             console.log(token)
-//             const data = await projectService.createProject({
-//                 name : name,
-//                 owner : owner
-//             },{ headers :{ "Access-Control-Allow-Origin" : "*",
-//             "Content-type": "Application/json",
-//             'Authorization' : token}})
-//             console.log(data)
-//             setName('')
-//             setOwner('')
-//             setLoading(false)
-            
-//         }catch(e){
-//             console.log(e)
-//         }
-//     }
-//     useEffect(()=>{
-//         setToken(window.localStorage.getItem('userToken'))
-//     })
-//     return(
-        
-//         <div className='flex align-center jc-center'>
-      
-//           <form id="form" onSubmit={handleSubmit}>
-//               <h1>Create Project</h1>
-//               <div className={classes["login-field"]}>
-//               <label htmlFor="name">Project Name</label>
-//               <input type="text" name="name" id="name" value={name} onChange={(e)=>{setName(e.target.value)}} placeholder='Enter project name' />
-//               </div>
-//               <div className={classes["login-field"]}>
-//               <label htmlFor="owner">Project Owner</label>
-//               <input type="text" name="owner" id="owner" value={owner} onChange={(e)=>{setOwner(e.target.value)}} placeholder='Enter owner name' />
-//               </div>
-//               {loading?<button className={classes.btn} disabled> Creating Project</button>:<button className={classes.btn} type="submit">Create </button>}
-             
-//           </form>
-
-//       </div>
-//     )
-// }
 import projectService from '../../services/project'
 import userService from '../../services/user'
 import {Formik,Form,Field,ErrorMessage} from "formik"
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import Link from 'next/link'
 import Button from '@mui/material/Button';
-import formik from "formik"
 import TextField from "./TextField"
 import {useField}  from "formik"
 import * as Yup from "yup"
@@ -68,10 +15,15 @@ import DatePicker from "react-datepicker"
 import classes from "../../styles/CreateProjectForm.module.css"
 import "react-datepicker/dist/react-datepicker.css"
 import { MultiSelect } from "react-multi-select-component";
+
+import { useRouter } from 'next/router'
+
 // import { set } from 'mongoose';
 
 
 const CreateProjectForm = ({token})=>{
+    const router = useRouter()
+     const [projectData,setProjectData] = useState([])
     const [owners,setOwners] = useState('[]')
     const [name,setName] = useState('')
     const [owner,setOwner] = useState('select Owner')
@@ -82,16 +34,12 @@ const CreateProjectForm = ({token})=>{
     const [endDate, setEndDate] = useState("");
     const [error,setError] = useState(false);
     const [selected,setSelected] = useState([]);
-// console.log(selected)
-// console.log(owner)
     const onSubmit = async (values) => {
        
         try{
-                // console.log(values)
-                // console.log(startDate, endDate, selected, owner)
                 const data = await projectService.createProject({
-                    name:name,
-                    owner:owner,
+                    name:values.projectName,
+                    owner:values.projectOwner,
                     start_date: startDate,
                     end_date:endDate,
                     members:selected.map(s=>s.value)
@@ -99,7 +47,7 @@ const CreateProjectForm = ({token})=>{
                 { headers :{ "Access-Control-Allow-Origin" : "*",
                 "Content-type": "Application/json",
                 'Authorization' : token}})
-                // console.log("data",data)
+                setProjectData(data)
                 resetData()
                 // setLoading(false)
             }catch(e){
@@ -107,7 +55,6 @@ const CreateProjectForm = ({token})=>{
                 // setLoading(false)
                 console.log(e)
             }
-            
         }
 
     const  resetData = ()=>{
@@ -123,10 +70,8 @@ const CreateProjectForm = ({token})=>{
     useEffect(()=>{
         // setToken(window.localStorage.getItem('userToken'))
         async function getData(token){
-            
             try{
-                
-                console.log('start')
+                // console.log('start')
                 const users = await userService.getUsers({
                     headers :{ "Access-Control-Allow-Origin" : "*",
                 "Content-type": "Application/json",
@@ -149,8 +94,9 @@ const CreateProjectForm = ({token})=>{
                 })
                 setOwners(JSON.stringify(owners))
                 // setLoading(false)
-               console.log("close")
+            //    console.log("close")
                 // setOwner(response.data)
+                // 
                 
                 setLoading(true)
                 // console.log("owner",owner)
@@ -226,8 +172,8 @@ else{
         // onSubmit = {console.log("submit!") }
         > 
      { 
-     formik => {
-         // console.log("formik",formik)
+     (formik) => {
+        //  console.log("formik",formik)
              return(
                  <Form >
                  <h1 className={classes.head}>Create Project</h1>
@@ -250,10 +196,10 @@ else{
                         label="Project Owner"
                         name = "projectOwner"
                         placeholder= "Select"
-                        onChange={e=>{e.preventDefault()
-                                        setOwner(e.target.value)
-                                    }}
-                        value={owner}
+                        // onChange={e=>{e.preventDefault()
+                        //                 setOwner(e.target.value)
+                        //             }}
+                        // value={owner}
                         >
                          
                          {/* {console.log(owner)} */}
@@ -325,8 +271,8 @@ else{
  
                          <div className={classes["pro-btn"]}>
                      <button  onClick={resetData} className={classes.resetBtn} type="reset"  >Reset</button>
-                     {/* {validationSchema ?<button className={classes.createBtn} type="submit">Create</button>:<button className={classes.createBtn} disabled type="submit">Create</button>} */}
                       <button onSubmit={onSubmit}  onClick={validateDate}     className={classes.createBtn}  type="submit" >Create</button>
+                     
                       {/* disabled={!(formik.isValid || formik.dirty)} */}
                       {/* disabled={!(formik.isValid && formik.dirty)} */}
                      

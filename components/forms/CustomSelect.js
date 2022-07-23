@@ -4,6 +4,7 @@ import classes from  "../../styles/CreateProjectForm.module.css"
 const CustomSelect = ({label,...props})=>{
     // console.log(props)
     const [field,meta] = useField(props)
+    // console.log("field",field)
 
     return(
         <>
@@ -13,7 +14,7 @@ const CustomSelect = ({label,...props})=>{
         <select
          {...field}
          {...props}
-
+         value = {field.value}
          className = {meta.touched && meta.error ? classes["input-error"] :""}
          />
          </div>

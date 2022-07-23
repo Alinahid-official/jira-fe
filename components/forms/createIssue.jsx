@@ -1,149 +1,206 @@
-import {Formik,Form,Field,ErrorMessage} from "formik"
+import Backdrop from '@mui/material/Backdrop';
 import * as Yup from "yup"
-// import classes from "../../styles/CreateIssueForm.module.css"
+import issueService from '../../services/issue'
 import classes from "../../styles/CreateProjectForm.module.css"
 import TextField from "./TextField";
 import CustomSelect from "./CustomSelect";
-import { useEffect,useState } from "react";
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
-import Button from '@mui/material/Button';
-import { MultiSelect } from "react-multi-select-component";
 import projectService from '../../services/project'
-
-const CreateIssueForm = ({token})=>{
-    // const [token, setToken] = useState('')
-    const [loading,setLoading] = useState(false)
-    const [projectName,setProjectName] = useState([])
-    // const [projectId,setProjectId] = useState("")
-    const [assignee,setAssignee] = useState("")
-    const [selected,setSelected] = useState([]);
-    const [a,setA] = useState(JSON.stringify([]));
-    // console.log(projectId)
-    // console.log("",assignee)
+import { useEffect,useState } from "react";
+import CircularProgress from '@mui/material/CircularProgress';
+import {Formik,Form} from "formik"
+import { MultiSelect } from "react-multi-select-component";
 
 
-  async function  getAssignees(projectId){
-        console.log(projectId)
+const validationSchema = Yup.object({
+    summary:Yup
+    .string()
+    .required("Required"),
+    type:Yup
+    .string()
+    .required("Required"),
+    description:Yup.string().required("Required"),
+    priority:Yup.string().oneOf(["high","low","medium"],).required("Required"),
+    tags:Yup.string().oneOf(["a","b","c"],).required("Required"),
+    sprint:Yup.string().oneOf(["1","2","3"],).required('Required'),
+    storyPoints:Yup.number().required("Required")
+
+
+})
+
+const CreateIssueForm = ()=>{
+
+    const [loading,setLoading] = useState(false);
+    const [assignees,setAssignees] = useState(JSON.stringify([]))
+    const [projects,setProjects] = useState([])
+    const [selected,setSelected] = useState([])
+    const [selectedProjectId,setSelectedProjectId] =useState("");
+    const [token, setToken] = useState('')
+
+    const onSubmit =async(values)=>{
         try {
-            const project = await projectService.getProjectById(projectId,{
-                headers :{ "Access-Control-Allow-Origin" : "*",
-            "Content-type": "Application/json",
-            'Authorization' : token}
-            })
-            // console.log(project)
-
-                // const b =  a.map(m=>m.members)
-                // setAssignee(JSON.stringify(project.members))
-                // console.log("members",a)
-            const a =  project.members.map(m=>{
-                return {value:m._id ,
-                        label: m.name
-                    }
-            })
-                
-            setA(JSON.stringify(a));
+            console.log("hello")
+            const data = await issueService.createIssue({
+                               summary:values.summary,
+                               type:values.type,
+                               tags:values.tags,
+                               description:values.description,
+                               priority:values.priority,
+                               project_id:selectedProjectId,
+                               story_points:values.storyPoints,
+                               assignees:selected
+                                 
+                            },{ headers :{ "Access-Control-Allow-Origin" : "*",
+                            "Content-type": "Application/json",
+                            'Authorization' : token}})
+                            console.log("data",data)
+                            // setProject('')
+                            // setAssignee('')
+                            // setLoading(false)
+                            
             
-        } catch (e) {
-            console.log(e)
+        } catch (err) {
+            
         }
-  }
-    
-    useEffect(()=>{
-
-        // setToken(window.localStorage.getItem('userToken'))
-
-        async function getData(){
-            try{
-                const project = await projectService.getProjects({
-                    headers :{ "Access-Control-Allow-Origin" : "*",
+    }
+    async function getAssignees(projectId){
+        try {
+            const projectDetails = await projectService.getProjectById(projectId,{
+                headers:{"Access-Control-Allow-Origin" : "*",
                 "Content-type": "Application/json",
-                'Authorization' : token}
-                });
-                // console.log("name",project)
-                if(!project){
+                'Authorization' : token
+      }
+            })
+            if(projectDetails){
+                const apiAssignees = projectDetails.members.map(m=>{
+                    return {
+                        value:m._id,
+                        label:m.name
+                    }
+                })
+                setAssignees(JSON.stringify(apiAssignees))
+                console.log("assignees",assignees)
+                
+            }else{
+                setLoading(false)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    useEffect(()=>{
+        async function getData(){
+            try {
+                setToken(window.localStorage.getItem('userToken'))
+                const allProjects = await projectService.getProjects({
+                    headers:{"Access-Control-Allow-Origin" : "*",
+                    "Content-type": "Application/json",
+                    'Authorization' : token}
+                })
+
+                if(!allProjects){
                     setLoading(false)
                     return
+                }else{
+                    setProjects(allProjects)
+                    setSelectedProjectId(allProjects[0]?._id)
+                    // setLoading(true)
+                    getAssignees(allProjects[0]?._id)
+                    console.log("",allProjects[0]?._id)
                 }
-                setProjectName(project)
-                setLoading(true)
-                console.log(project)
-                // console.log("owner",owner)
-            
-            }catch(e){
-                 console.log(e)
+            } catch (err) {
+                console.log(err)
             }
         }
-        setLoading(true)
         getData()
-        setLoading(false)
-       
-        console.log(a)
-        
-    },[a])
+        setLoading(true)
 
-    // const a ={
-    //         //  value:assignee.members.map(i=>i._id),
-    //         //  label:assignee.members.map(m=>m.name)
-           
-    // }
-
-    
-    // console.log("sd",a)
+    },[])
 
     if(!loading){
         return <Backdrop open>
-   <CircularProgress color="inherit" />
- </Backdrop>
-    }
-    else{
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    }else{
         return (
             <Formik
-             initialValues={{
+            initialValues={{
                 summary:"",
                 type:"",
-                project:"",
                 description:"",
                 priority:"",
-                asignee:"",
                 tags:"",
                 sprint:"",
                 storyPoints:""
-             }}
-             >
-    
-    
-            {
-                formik=>{
-                    return(
-                        <Form>
-                            <h1 className={classes.head}>Create User Stories/Tasks/Bugs</h1>
-                            <div className={classes.grid}>
-                                {/* summary */}
-                                <div className={classes.summary}>
-                                    <TextField
-                                      label= "Summary"
-                                      name = "summary"
-                                      type = "text"
-                                      placeholder="Add Summary"
-                                    >
-                                    </TextField>
+            }}
+            validationSchema={validationSchema}
+            >
+                {
+                    formik=>{
+                        return(
+                            <Form onSubmit={onSubmit}>
+                                <h1 className={classes.head}>Create User Stories/Tasks/Bugs</h1>
+                                <div className={classes.grid}>
+                                    {/* SUMMARY */}
+                                    <div id='summary' >
+                                    {/* className={classes.summary} */}
+                                        <TextField
+                                        label="Summary"
+                                        name = "summary"
+                                        type = "text"
+                                        placeholder  = "Add Summary"
+                                        >
+                                        </TextField>
                                     </div>
-    
-                                    {/* description */}
-                                    <div className={classes.description}>
-                                    <TextField
-                                      label= "Description"
-                                      name = "description"
-                                      type = "text"
-                                      placeholder="Write Description"
+                               
+
+                                {/* type */}
+                                <div className={classes.type}>
+                                <CustomSelect
+                                         label="Type"
+                                         name="type"
+                                        >
+                                            <option value="">Select</option>
+                                            <option value="task">Task</option>
+                                            <option value="bug">Bug</option>
+                                            <option value="story">Story</option>
+                                        </CustomSelect>
+                                </div>
+
+                                {/* project */}
+                                <div className={classes.project}>
+                                    <label className={classes.label} htmlFor="project">Project</label>
+                                    <select 
+                                    className={classes.select}
+                                    value={selectedProjectId}
+                                     onChange={(event)=>{
+                                        getAssignees(event.target.value)
+                                        setSelectedProjectId(event.target.value)
+                                     }}
                                     >
+                                        {projects.map((v)=>{
+                                            return <option 
+                                            className={classes.option} 
+                                            key={v._id} 
+                                            value={v._id}>
+                                                {v.name}</option>
+                                        })}
+                                    </select>
+                                </div>
+
+                                {/* DESCRIPTION */}
+                                <div className={classes.description}>
+                                    <TextField
+                                    label="Description"
+                                    name="description"
+                                    type="text"
+                                    placeholder="Write Description">
                                     </TextField>
-                                    </div>
-    
-                                    {/* priority */}
-                                    <div className={classes.priority}>
-                                        <CustomSelect
+                                </div>
+
+                                {/* PRIORITY */}
+                                <div className={classes.priority}>
+                                <CustomSelect
                                          label="Priority"
                                          name="priority"
                                          placeholder="Select"
@@ -153,62 +210,65 @@ const CreateIssueForm = ({token})=>{
                                             <option value="medium">Medium</option>
     
                                         </CustomSelect>
-                                    </div>
-    
-                                    {/* project */}
-                                    <div className={classes.project}>
-                                        <CustomSelect
-                                         label="Project"
-                                         name="project"
-                                         placeholder="Select"
-                                         onChange = {(event)=>{
-                                            getAssignees( event.target.value)
-                                         }}
-                                        >
-                                           {projectName.map((v)=>{
-                              {/* // {console.log(value._id)} */}
-                         return  <option  className={classes.option}  key={v._id} value={v._id}>{v.name}</option> 
-                          })} 
-                                        </CustomSelect>
-                                    </div>
+                                </div>
 
-                                    {/* assignee */}
-                                    <div className={classes.assignee}>
-                                        <label className={classes.label} htmlFor="assignees">Assignees</label>
-                                        <MultiSelect
-                                          options={ JSON.parse(a)}
-                                          name="assignees"
-                                          required="true"
-                                          displayValue = "value"
-                                          value={selected}
-                                          onChange={setSelected}
-                                          className={classes.multiInput}
-                                     onRemove = {(event)=>{console.log(event)}}
-
-                                        >
-
+                                {/* ASSIGNEE */}
+                                <div className={classes.assignee}>
+                                    <label htmlFor="assignees" className={classes.label}>Assignees</label>
+                                    <MultiSelect
+                                                                options={ JSON.parse(assignees)}
+                                                                name="assignees"
+                                                                required="true"
+                                                                displayValue = "value"
+                                                                value={selected}
+                                                                onChange={setSelected}
+                                                                className={classes.multiInput}
+                                                            onRemove = {(event)=>{console.log(event)}}>
                                         </MultiSelect>
-                                        
-                                             {/* {<option value={assignee.members} key={assignee._id}>{assignee.members}</option>} */}
-                                            {/* {assignee.map((value)=>{
-                                                return <option className={classes.option} value={value._id} key={value._id} >{value.members}</option>
-                                            })} */}
-                                          
-                                        
+                                </div>
+
+                                {/* TAGS */}
+                                <div className={classes.tags}>
+                                <CustomSelect
+                                         label="Tags"
+                                         name="tags"
+                                         placeholder="Select"
+                                        >
+                                            <option value="a">A</option>
+                                            <option value="b">B</option>
+                                            <option value="c">C</option>
+    
+                                        </CustomSelect>
+                                </div>
+
+                                  {/* story points */}
+                                  <div className={classes.storyPoints}>
+                                    <TextField
+                                      label= "Story Points"
+                                      name = "storyPoints"
+                                      type = "number"
+                                      placeholder="0,1,2...."
+                                    >
+                                    </TextField>
                                     </div>
-    
-                                
-                            </div>
-                        </Form>
-                    )
+                                    <div>
+                                        <button type='reset'>Reset</button>
+                                        <button onSubmit={onSubmit} type='submit'>Create</button>
+                                    </div>
+
+
+                                    </div>
+                            </Form>
+                           
+                        )
+
+                    }
                 }
-            }    
-    
+
             </Formik>
         )
     }
-    
+
 }
 
-
-export default CreateIssueForm;
+export default CreateIssueForm

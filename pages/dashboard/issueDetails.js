@@ -2,7 +2,8 @@ import { useContext , useEffect,useState } from "react";
 import { Context } from "../../context";
 import { useRouter } from 'next/router'
 import Layout from '../../layout/layout'
-import IssueDetailsContent from "../../components/containers/issueDetails";
+import SideNavBar from "../../components/sidebars/sidebar";
+import IssueDetailsContent from "../../components/containers/issueDetails"
 
 export default function IssueDetails(){
     const router = useRouter()
@@ -22,7 +23,11 @@ export default function IssueDetails(){
     return(
         <>
             <Layout role={role}>
-                {/* <IssueDetailsContent userId={userId} issueId='62d435e37964151508034f39'/> */}
+               
+            {/* userId={userId} issueId='62d435e37964151508034f39' */}
+                <IssueDetailsContent />
+                
+
             </Layout>
         </>
     )
