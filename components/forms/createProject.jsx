@@ -74,7 +74,7 @@ const CreateProjectForm = ({token})=>{
             
             try{
                 
-                console.log('start')
+                // console.log('start')
                 const users = await userService.getUsers({
                     headers :{ "Access-Control-Allow-Origin" : "*",
                 "Content-type": "Application/json",
@@ -97,7 +97,7 @@ const CreateProjectForm = ({token})=>{
                 })
                 setOwners(JSON.stringify(owners))
                 // setLoading(false)
-               console.log("close")
+            //    console.log("close")
                 // setOwner(response.data)
                 
                 setLoading(true)

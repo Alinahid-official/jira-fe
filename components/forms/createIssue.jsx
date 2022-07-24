@@ -27,7 +27,7 @@ const CreateIssueForm = ({token})=>{
 
 
   async function  getAssignees(projectId){
-        console.log(projectId)
+        // console.log(projectId)
         try {
             const project = await projectService.getProjectById(projectId,{
                 headers :{ "Access-Control-Allow-Origin" : "*",
@@ -105,7 +105,15 @@ const CreateIssueForm = ({token})=>{
         'Authorization' : token}})
         console.log(data)
         resetForm()
+        reset()
         setLoading(true)
+        
+    }
+    const reset = ()=>{
+        setSelected([])
+        setProjectName([])
+        setPriority(null)
+        setStatus(null)
     }
     // const a ={
     //         //  value:assignee.members.map(i=>i._id),

@@ -7,11 +7,18 @@ const createIssue = async (dataObj,header) => {
     const response = await axios.post(baseUrl, dataObj,header)
     return response.data
   }
+
+const getIssueById = async (id,header) =>{
+    console.log('dedo re',id)
+    const url = `${baseUrl}/${id}`
+    const response = await axios.get(url,header)
+    return response.data
+}
+
 const getIssuesByProjectId = async ( projectId,headers)=>{
-  console.log('dedo re',projectId)
   const url = `${baseUrl}/issueByProject/${projectId}`
   const response = await axios.get(url,headers)
   return response.data
 }
   
-  export default { createIssue , getIssuesByProjectId }
+  export default { createIssue , getIssuesByProjectId, getIssueById }

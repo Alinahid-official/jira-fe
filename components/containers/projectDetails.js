@@ -3,6 +3,7 @@ import React, {useEffect, useState } from "react";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import IssueCard from "../cards/issue";
+import Link from 'next/link'
 
 export default function ProjectDetails({projectId,token}){
     const [load, setLoad] = useState(true)
@@ -34,7 +35,10 @@ export default function ProjectDetails({projectId,token}){
         <div>
             {issues ? JSON.parse(issues).map(issue=>{
                 return(
-                    <IssueCard key={issue._id} issue={issue}/>
+                    <Link key={issue._id} href={`/dashboard/projectBoard/issueDetails/${issue._id}`}>
+                        <a><IssueCard  issue={issue}/></a>
+                    </Link>
+                    
                 )
             }):null}
         </div>
