@@ -1,6 +1,6 @@
 import issueServices from "../../services/issue"
 import React, {useEffect, useState } from "react";
-import classes from "../../styles/IssueDetails.module.css"
+import classes from "../../styles/issueDetails.module.css"
 import {faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import Backdrop from '@mui/material/Backdrop';
