@@ -6,6 +6,7 @@ import SearchBar from '../../../components/headers/searchbar'
 
 export default function ProjectBoard({user,token}){
     const router = useRouter()
+    
     useEffect(() =>{
         if(!user){
             router.push('/login')

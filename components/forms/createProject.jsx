@@ -188,7 +188,7 @@ else{
                           type = "text"
                           placeholder = "Project Name"
                           value = {name}
-                          defaultValue = 'select'
+                        //   defaultValue = 'select'
                           onChange= {e=>setName(e.target.value)}
                           required
                        />
