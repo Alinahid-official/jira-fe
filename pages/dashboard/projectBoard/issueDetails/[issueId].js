@@ -2,7 +2,7 @@ import { useEffect,useState } from "react";
 import { useRouter } from 'next/router'
 import Layout from '../../../../layout/layout'
 import IssueDetailsContent from "../../../../components/containers/issueDetails";
-import Header from '../../components/headers/searchbar'
+import Header from '../../../../components/headers/searchbar'
 
 // import issue from "../../../../services/issue";
 

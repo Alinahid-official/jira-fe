@@ -5,15 +5,16 @@ import {faSquarePlus} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+import Link from 'next/link'
 
 export default function ProjectDetails({issueId, token,user}){
-    
     const [load, setLoad] = useState(false)
     const [issue, setIssue] = useState(null)
+    const [creater, setCreater ] = useState(false)
+    // console.log(user)
     // console.log('Issue', issueId)
+    let puser=JSON.parse(user)
     useEffect( () => {
-        // setLoad(true)
-        console.log('issueIde',issueId)
        const getIssue = async ()=>{
             try{
                 // const token = window.localStorage.getItem('userToken')
@@ -26,15 +27,15 @@ export default function ProjectDetails({issueId, token,user}){
                     return
                 }
                 // setIssue(JSON.stringify(data))
+                if(puser.id==data.created_by._id){
+                    setCreater(true)
+                }
                 setIssue(data)
-                console.log(data)
-                // setLoad(false)
             }catch(e){
                 console.log(e)
             }
         }
         getIssue()
-        // setLoad(false)
     },[])
     return(
         !issue?<Backdrop open>
@@ -104,7 +105,8 @@ export default function ProjectDetails({issueId, token,user}){
           <div className={classes.right}>
               
               <a href="">Related Issues</a>
-              <a href="">Edit Issues</a>
+              {creater?<Link href={`/dashboard/projectBoard/editIssue/${issue._id}`}><a href="">Edit Issues</a></Link>:null}
+              
               
           </div>
           </div>
