@@ -2,7 +2,7 @@ import { useEffect,useState } from "react";
 import { useRouter } from 'next/router'
 import Layout from '../../../layout/layout'
 import ProjectDetailsContent from "../../../components/containers/projectDetails";
-import Header from '../../components/headers/searchbar'
+import Header from '../../../components/headers/searchbar'
 
 export default function ProjectDetails({user,token}){
     const router = useRouter()
