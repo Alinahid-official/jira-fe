@@ -2,6 +2,10 @@ import axios from 'axios'
 import config from '../config'
 const baseUrl = `${config.getServerHost()}/issue`
 
+const updateIssue = async(id,dataObj,header) =>{
+  const response = await axios.put(`${baseUrl}/${id}`, dataObj,header)
+    return response.data
+}
 const createIssue = async (dataObj,header) => {
     console.log(dataObj,header)
     const response = await axios.post(baseUrl, dataObj,header)
@@ -9,7 +13,7 @@ const createIssue = async (dataObj,header) => {
   }
 
 const getIssueById = async (id,header) =>{
-    console.log('dedo re',id)
+    console.log(id)
     const url = `${baseUrl}/${id}`
     const response = await axios.get(url,header)
     return response.data
@@ -21,4 +25,4 @@ const getIssuesByProjectId = async ( projectId,headers)=>{
   return response.data
 }
   
-  export default { createIssue , getIssuesByProjectId, getIssueById }
+  export default { createIssue , getIssuesByProjectId, getIssueById, updateIssue }

@@ -10,10 +10,10 @@ import functions from '../functions'
 export default function ProjectDetails({projectId,token}){
     const [load, setLoad] = useState(true)
     const [issues, setIssues] = useState(null)
-    const [todo, setTodo] = useState([])
-    const [development, setDevelopment] = useState([])
-    const [testing, setTesting] = useState([])
-    const [completed, setCompleted] = useState([])
+    const [todo, setTodo] = useState('[]')
+    const [development, setDevelopment] = useState('[]')
+    const [testing, setTesting] = useState('[]')
+    const [completed, setCompleted] = useState('[]')
 
     useEffect( () => {
        const getIssueList = async ()=>{
@@ -27,10 +27,10 @@ export default function ProjectDetails({projectId,token}){
                     setLoad(true)
                 }
                 setIssues(JSON.stringify(data))
-                setTodo(functions.filterByStatus('todo',JSON.parse(issues)))
-                setDevelopment(functions.filterByStatus('development',JSON.parse(issues)))
-                setTesting(functions.filterByStatus('testing',JSON.parse(issues)))
-                setCompleted(functions.filterByStatus('completed',JSON.parse(issues)))
+                setTodo(JSON.stringify(functions.filterByStatus('todo',JSON.parse(issues))))
+                setDevelopment(JSON.stringify(functions.filterByStatus('development',JSON.parse(issues))))
+                setTesting(JSON.stringify(functions.filterByStatus('testing',JSON.parse(issues))))
+                setCompleted(JSON.stringify(functions.filterByStatus('completed',JSON.parse(issues))))
                 console.log(data)
                 setLoad(false)
             }catch(e){
@@ -53,7 +53,7 @@ export default function ProjectDetails({projectId,token}){
             <div className='flex'>
                 <div className='width-25'>
                     <h3>To Do</h3>
-                    {todo.map(issue=>{
+                    {JSON.parse(todo).map(issue=>{
                         return(
                             <Link key={issue._id} href={`/dashboard/projectBoard/issueDetails/${issue._id}`}>
                                 <a><IssueCard  issue={issue}/></a>
@@ -63,7 +63,7 @@ export default function ProjectDetails({projectId,token}){
                 </div>
                 <div className='width-25'>
                     <h3>Development</h3>
-                    {development.map(issue=>{
+                    {JSON.parse(development).map(issue=>{
                         return(
                             <Link key={issue._id} href={`/dashboard/projectBoard/issueDetails/${issue._id}`}>
                                 <a><IssueCard  issue={issue}/></a>
@@ -73,7 +73,7 @@ export default function ProjectDetails({projectId,token}){
                 </div>
                 <div className='width-25'>
                     <h3>Testing</h3>
-                    {testing.map(issue=>{
+                    {JSON.parse(testing).map(issue=>{
                         return(
                             <Link key={issue._id} href={`/dashboard/projectBoard/issueDetails/${issue._id}`}>
                                 <a><IssueCard  issue={issue}/></a>
@@ -83,7 +83,7 @@ export default function ProjectDetails({projectId,token}){
                 </div>
                 <div className='width-25'>
                     <h3>Completed</h3>
-                    {completed.map(issue=>{
+                    {JSON.parse(completed).map(issue=>{
                         return(
                             <Link key={issue._id} href={`/dashboard/projectBoard/issueDetails/${issue._id}`}>
                                 <a><IssueCard  issue={issue}/></a>

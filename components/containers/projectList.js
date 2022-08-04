@@ -36,7 +36,7 @@ export default function ProjectList({token}){
         
         // setLoad(true)
         // const projectList = JSON.parse(projects)
-    })
+    },[])
     return(
         <>
         {!load ? <Backdrop open>
