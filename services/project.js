@@ -1,6 +1,6 @@
 import axios from 'axios'
 import config from '../config'
-const baseUrl = `${config.getServerHost()}/project`
+const baseUrl = "http://localhost:4000/project"
 
 const createProject = async (dataObj,header) => {
     console.log(dataObj,header)

@@ -1,6 +1,7 @@
 import { style } from '@mui/system'
 import styles from '../../styles/issueCard.module.css'
 export default function IssueCard({issue}){
+    console.log(issue.created_by)
     const doc =new Date(issue.date_of_creation).toLocaleDateString()
     let bg
     if(issue.priority=='high'){
@@ -27,8 +28,9 @@ export default function IssueCard({issue}){
             <div className='flex jc-between pad-10'>
                 <div className='flex height-100'>
                     <img height="50px" width="50px" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1887&q=80" />  
-                    <span style={{marginTop : "15px",paddingLeft:"10px"}}>{issue.created_by.name}</span>
+                    <span style={{marginTop : "15px",paddingLeft:"10px"}}> {issue.created_by.name} </span>
                 </div>
+                
                 <div>
                     <div style={{color:"rgba(0, 0, 0, 0.4)",fontSize:"90%"}}>priority</div>
                     <div 

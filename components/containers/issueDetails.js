@@ -13,6 +13,7 @@ export default function ProjectDetails({issueId, token,user}){
     const [creater, setCreater ] = useState(false)
     // console.log(user)
     // console.log('Issue', issueId)
+     
     let puser=JSON.parse(user)
     useEffect( () => {
        const getIssue = async ()=>{
