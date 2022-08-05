@@ -14,7 +14,7 @@ export default function ProjectDetails({issueId, token,user}){
     // console.log(user)
     // console.log('Issue', issueId)
      
-    let puser=JSON.parse(user)
+    let puser=user?JSON.parse(user):null
     useEffect( () => {
        const getIssue = async ()=>{
             try{
