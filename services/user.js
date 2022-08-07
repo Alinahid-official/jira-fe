@@ -1,6 +1,7 @@
 import axios from 'axios'
 import config from '../config'
-const baseUrl ="http://localhost:4000/user"
+// const baseUrl ="http://localhost:4000/user"
+const baseUrl = `${config.getServerHost()}/user`
   
 const getUsers = async headers =>{
   console.log(baseUrl)

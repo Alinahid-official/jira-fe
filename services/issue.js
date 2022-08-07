@@ -1,6 +1,7 @@
 import axios from 'axios'
 import config from '../config'
-const baseUrl = "http://localhost:4000/issue/"
+// const baseUrl = "http://localhost:4000/issue/"
+const baseUrl = `${config.getServerHost()}/issue`
 
 const updateIssue = async(id,dataObj,header) =>{
   const response = await axios.put(`${baseUrl}/${id}`, dataObj,header)
