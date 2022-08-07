@@ -1,7 +1,7 @@
 import { style } from '@mui/system'
 import styles from '../../styles/issueCard.module.css'
 export default function IssueCard({issue}){
-    console.log(issue.created_by)
+    // console.log(issue.created_by)
     const doc =new Date(issue.date_of_creation).toLocaleDateString()
     let bg
     if(issue.priority=='high'){
@@ -16,7 +16,7 @@ export default function IssueCard({issue}){
     return(
         <div className={styles.box}>
             <div className='flex jc-between ' >
-                <span style={{fontSize:"100%"}}>id:{issue._id}</span>
+                <span style={{fontSize:"90%"}}>id:{issue._id}</span>
                 <span style={{color:"rgba(0, 0, 0, 0.5)",fontSize:"70%"}}>{doc}</span>
             </div>
             <div className="pad-10" >

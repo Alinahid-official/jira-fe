@@ -3,5 +3,10 @@ const filterByStatus= (status, issues)=>{
         return issue.status == status
     })
 }
+const filterByPriority= (priority, issues)=>{
+    return issues.filter(issue=>{
+        return issue.priority == priority
+    })
+}
 
-export default {filterByStatus}
+export default {filterByStatus, filterByPriority}

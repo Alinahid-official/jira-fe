@@ -5,11 +5,11 @@ import ProjectDetailsContent from "../../../components/containers/projectDetails
 import Header from '../../../components/headers/searchbar'
 
 export default function ProjectDetails({user,token}){
-    const [projectId , setProjectId] = useState(null)
+    // const [projectId , setProjectId] = useState(null)
     const router = useRouter()
-    
+    console.log('route',router.query.projectId)
     useEffect(() =>{
-        setProjectId(router.query.projectId)
+        // setProjectId(router.query.projectId)
         if(!user){
             router.push('/login')
         }
@@ -20,7 +20,7 @@ export default function ProjectDetails({user,token}){
         <>
             <Layout role={user ? JSON.parse(user).job_role : null}>
                 <Header/>
-                <ProjectDetailsContent projectId={projectId} token={token}/>
+                <ProjectDetailsContent projectId={router.query.projectId} token={token}/>
             </Layout>
         </>
     )

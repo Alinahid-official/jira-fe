@@ -3,6 +3,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import classes from "../../styles/issueDetails.module.css"
 import { useEffect,useState } from "react";
 import commentService from "../../services/comment";
+import styles from "../../styles/CreateProjectForm.module.css"
 
 const Comment = ({issueId,token})=>{
     console.log(issueId)
@@ -55,8 +56,8 @@ const Comment = ({issueId,token})=>{
               <h3>Comments  <span onClick={()=>{console.log("clicked")}} ><FontAwesomeIcon icon={faSquarePlus} />  Add Comment</span> </h3>
               <div>
                 <p><label htmlFor="w3review">Write a comment:</label></p>
-                <textarea value={text} onChange={e=>setText(e.target.value)} rows="4" cols="50"></textarea>
-                <button onClick={addComment}>post</button>
+                <textarea value={text} onChange={e=>setText(e.target.value)} rows="4" cols="50"></textarea><br></br>
+                <button className={styles.createBtn} onClick={addComment}>post</button>
               </div>
               {comments?
               comments.map(comment=>{

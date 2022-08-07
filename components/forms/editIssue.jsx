@@ -141,7 +141,7 @@ const EditIssueForm = ({token,issueId})=>{
         console.log(data)
         resetForm()
         reset()
-        router.push(`/dashboard/projectBoard/issueDetails/${issueId}`)
+        router.push(`/dashboard/projectBoard`)
         
     }
     const reset = ()=>{
@@ -198,6 +198,7 @@ const EditIssueForm = ({token,issueId})=>{
                                       placeholder="Add Summary"
                                       value ={summary}
                                       onChange={e=>setSummary(e.target.value)}
+                                      disabled
                                     >
                                     </TextField>
                                     </div>
@@ -211,6 +212,7 @@ const EditIssueForm = ({token,issueId})=>{
                                       placeholder="Write Description"
                                       value={description}
                                       onChange={e=>setDescription(e.target.value)}
+                                      disabled
                                     >
                                     </TextField>
                                     </div>
@@ -267,7 +269,8 @@ const EditIssueForm = ({token,issueId})=>{
                                           value={selected}
                                           onChange={setSelected}
                                           className={classes.multiInput}
-                                     onRemove = {(event)=>{console.log(event)}}
+                                          onRemove = {(event)=>{console.log(event)}}
+                                          disabled
 
                                         >
 
@@ -294,6 +297,7 @@ const EditIssueForm = ({token,issueId})=>{
                                             <option value="todo">To do</option>
                                             <option value="development">Development</option>
                                             <option value="testing">Testing</option>
+                                            <option value="completed">Completed</option>
                                             {/* <option value="completed">Completed</option> */}
     
                                         </CustomSelect>
