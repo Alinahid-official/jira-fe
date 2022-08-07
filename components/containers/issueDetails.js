@@ -6,6 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import Link from 'next/link'
+import Comment from '../forms/comment'
 
 export default function ProjectDetails({issueId, token,user}){
     const [load, setLoad] = useState(false)
@@ -83,7 +84,8 @@ export default function ProjectDetails({issueId, token,user}){
               </div>
           </div>
           <hr />
-          <div className={classes.comment}>
+          <Comment issueId={issueId} token={token}/>
+          {/* <div className={classes.comment}>
               <h3>Comments <span> <span><FontAwesomeIcon onClick={()=>{console.log("clicked")}} icon={faSquarePlus} /></span>  Add Comment</span> </h3>
               <div className={classes.comments}>
                   <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
@@ -99,7 +101,7 @@ export default function ProjectDetails({issueId, token,user}){
                       <p>Added by Pushpa Raj</p>
                   </div>
               </div>
-          </div>
+          </div> */}
           </div>
           <div>
 
