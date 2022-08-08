@@ -106,6 +106,18 @@ const CreateIssueForm = ({token})=>{
         console.log(data)
         resetForm()
         reset()
+        const postRelatedIssue = await related.postRelatedIssue({
+            issue_id:issueId,
+            project_id:project,
+            document:`${values.summary } ${values.description}`
+        },
+           {
+            headers :{ "Access-Control-Allow-Origin" : "*",
+        "Content-type": "Application/json",
+        'Authorization' : token}
+           }
+        )
+        console.log(postRelatedIssue)
         setLoading(true)
         
     }
