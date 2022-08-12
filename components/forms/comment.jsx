@@ -4,9 +4,12 @@ import classes from "../../styles/issueDetails.module.css"
 import { useEffect,useState } from "react";
 import commentService from "../../services/comment";
 import styles from "../../styles/CreateProjectForm.module.css"
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Comment = ({issueId,token})=>{
     console.log(issueId)
+    const [load , setLoad] = useState(true)
     const [text, setText]= useState(null)
     const [comments, setComments]= useState(null)
     const getComments = async ()=>{
@@ -17,7 +20,9 @@ const Comment = ({issueId,token})=>{
             'Authorization' : token}
             })
             console.log('comments',res)
+            
             setComments(res)
+            setLoad(false)
         }
         catch(e){
             console.log(e)
@@ -25,6 +30,7 @@ const Comment = ({issueId,token})=>{
     }
     const addComment=async()=>{
             setText('')
+            setLoad(true)
             try {
 
                 const res = await commentService.addComment({
@@ -37,7 +43,7 @@ const Comment = ({issueId,token})=>{
                 })
                 // console.log('comments',res)
                 getComments()
-                
+                setLoad(false)
             }
             catch(e){
                 console.log(e)
@@ -51,8 +57,11 @@ const Comment = ({issueId,token})=>{
         
     },[])
     return(
-        <>
-        <div className={classes.comment}>
+        <>{load? <Backdrop open>
+            <CircularProgress color="inherit" />
+          </Backdrop>
+            :
+            <div className={classes.comment}>
               <h3>Comments  <span onClick={()=>{console.log("clicked")}} ><FontAwesomeIcon icon={faSquarePlus} />  Add Comment</span> </h3>
               <div>
                 <p><label htmlFor="w3review">Write a comment:</label></p>
@@ -80,7 +89,9 @@ const Comment = ({issueId,token})=>{
                   </div>
               </div> */}
           </div>
-        </>
+
+        }
+                </>
     )
 }
 
