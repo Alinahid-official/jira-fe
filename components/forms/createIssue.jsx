@@ -1,4 +1,5 @@
 import {Formik,Form,Field,ErrorMessage} from "formik"
+import { useRouter } from 'next/router'
 import * as Yup from "yup"
 // import classes from "../../styles/CreateIssueForm.module.css"
 import classes from "../../styles/CreateProjectForm.module.css"
@@ -13,6 +14,7 @@ import projectService from '../../services/project'
 import issueService from '../../services/issue'
 
 const CreateIssueForm = ({token})=>{
+    const router = useRouter()
     // const [token, setToken] = useState('')
     const [loading,setLoading] = useState(false)
     const [projectName,setProjectName] = useState([])
@@ -103,22 +105,11 @@ const CreateIssueForm = ({token})=>{
         { headers :{ "Access-Control-Allow-Origin" : "*",
         "Content-type": "Application/json",
         'Authorization' : token}})
-        console.log(data)
-        resetForm()
-        reset()
-        const postRelatedIssue = await related.postRelatedIssue({
-            issue_id:issueId,
-            project_id:project,
-            document:`${values.summary } ${values.description}`
-        },
-           {
-            headers :{ "Access-Control-Allow-Origin" : "*",
-        "Content-type": "Application/json",
-        'Authorization' : token}
-           }
-        )
-        console.log(postRelatedIssue)
-        setLoading(true)
+        console.log('datasss',data)
+        // resetForm()
+        // reset()
+        // setLoading(true)
+        router.push('/dashboard/projectBoard')
         
     }
     const reset = ()=>{

@@ -15,10 +15,12 @@ import DatePicker from "react-datepicker"
 import classes from "../../styles/CreateProjectForm.module.css"
 import "react-datepicker/dist/react-datepicker.css"
 import { MultiSelect } from "react-multi-select-component";
+import { useRouter } from 'next/router'
 // import { set } from 'mongoose';
 
 
 const CreateProjectForm = ({token})=>{
+    const router = useRouter()
     const [owners,setOwners] = useState('[]')
     const [name,setName] = useState('')
     const [owner,setOwner] = useState(null)
@@ -50,6 +52,7 @@ const CreateProjectForm = ({token})=>{
                 // console.log("data",data)
                 resetData()
                 setLoading(true)
+                router.push('/dashboard/projectBoard')
             }catch(e){
                 resetData()
                 // setLoading(false)
